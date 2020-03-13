@@ -50,5 +50,9 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     //ly to img
     implementation 'com.github.vipulasri.layouttoimage:library:1.0.0'
+    //pageview
+    implementation 'com.github.lsjwzh.RecyclerViewPager:lib:v1.1.1'
+    //new pagview
+    implementation 'com.hhl:gridpagersnaphelper:1.0.0'
 
 }

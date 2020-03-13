@@ -1,12 +1,9 @@
 package com.vrcorp.resepmasakan.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +24,7 @@ import com.vrcorp.resepmasakan.R;
 
 import java.util.ArrayList;
 
-public class
-HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
+public class SmallAdapter extends RecyclerView.Adapter<SmallAdapter.MyViewHolder> {
     private ArrayList<String> judulList = new ArrayList<>();
     private ArrayList<String> kategoriList = new ArrayList<>();
     private ArrayList<String> photoList = new ArrayList<>();
@@ -36,7 +32,8 @@ HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
     private Context context;
 
 
-    public HomeAdapter(Context context, ArrayList<String> judulList,
+
+    public SmallAdapter(Context context, ArrayList<String> judulList,
                        ArrayList<String> kategoriList,
                        ArrayList<String> photoList,
                        ArrayList<String> urlList) {
@@ -51,6 +48,7 @@ HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
         TextView txtKategori, txtJudul;
         ImageView photoResep;
         CardView cardBaru;
+
         public MyViewHolder(View view) {
             super(view);
             //this.bg = view.findViewById(R.id.bg_img);
@@ -64,7 +62,7 @@ HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.content_list, parent, false);
+                .inflate(R.layout.small_content, parent, false);
         return new MyViewHolder(itemView);
     }
 

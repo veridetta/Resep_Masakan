@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -31,8 +32,11 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.tabs.TabLayout;
+import com.hhl.gridpagersnaphelper.GridPagerSnapHelper;
 import com.vrcorp.resepmasakan.R;
 import com.vrcorp.resepmasakan.adapter.HomeAdapter;
+import com.vrcorp.resepmasakan.adapter.SmallAdapter;
 
 
 import org.json.JSONArray;
@@ -62,12 +66,24 @@ public class HomeFragment extends Fragment {
     View view;
     SearchView cari;
     SwipeRefreshLayout refresh;
-    RecyclerView mRecyclerView;
+    RecyclerView mRecyclerView,popRc, ayamRc;
     Document mBlogDocument  = null, cardDoc = null;
     private ArrayList<String> card_gambar = new ArrayList<>();
     private ArrayList<String> card_kategori = new ArrayList<String>();
     private ArrayList<String> card_judul = new ArrayList<>();
     private ArrayList<String> card_url = new ArrayList<>();
+    //--------------------------
+    //-----------------------
+    private ArrayList<String> pop_gambar = new ArrayList<>();
+    private ArrayList<String> pop_kategori = new ArrayList<String>();
+    private ArrayList<String> pop_judul = new ArrayList<>();
+    private ArrayList<String> pop_url = new ArrayList<>();
+    //-------------------
+    //-------------------
+    private ArrayList<String> ay_gambar = new ArrayList<>();
+    private ArrayList<String> ay_kategori = new ArrayList<String>();
+    private ArrayList<String> ay_judul = new ArrayList<>();
+    private ArrayList<String> ay_url = new ArrayList<>();
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -99,7 +115,12 @@ public class HomeFragment extends Fragment {
         //refresh = view.findViewById(R.id.swiperefresh);
         //refresh.setRefreshing(true);
         mRecyclerView= view.findViewById(R.id.rc_home);
-        cari.setQueryHint("Cari Konjugasi");
+        mRecyclerView.setHasFixedSize(true);
+        popRc= view.findViewById(R.id.rc_populer);
+        popRc.setHasFixedSize(true);
+        ayamRc= view.findViewById(R.id.rc_ayam);
+        ayamRc.setHasFixedSize(true);
+        cari.setQueryHint("Masukan Kata Kunci");
         cari.onActionViewExpanded();
         cari.setIconified(true);
         new Handler().postDelayed(new Runnable() {
@@ -142,16 +163,24 @@ public class HomeFragment extends Fragment {
         protected Void doInBackground(Void... params) {
             // NO CHANGES TO UI TO BE DONE HERE
             String url = "https://resepdemo.blogspot.com/";
+            String urlPopuler ="https://resepdemo.blogspot.com/search/label/rekomendasi";
+            String urlAyam = "https://resepdemo.blogspot.com/search/label/ayam";
             Document mBlogPagination = null;
+            Document pagPopuler = null;
+            Document pageAyam = null;
             try {
                 mBlogPagination = Jsoup.parse(new URL(url),50000);
+                pagPopuler = Jsoup.parse(new URL(urlPopuler),50000);
+                pageAyam = Jsoup.parse(new URL(urlAyam),50000);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             //mBlogPagination.outputSettings().prettyPrint(false);
-            Log.d(TAG, "doInBackground: "+mBlogPagination);
-            System.out.println(mBlogPagination);
+            //Log.d(TAG, "doInBackground: "+mBlogPagination);
+            //System.out.println(mBlogPagination);
             // Using Elements to get the Meta data
+            // -------------- RECENTT ---------------
+            //----------------
             Elements mElementDataSize = mBlogPagination.select("div[class=date-posts] div[class=post-outer]");
             // Locate the content attribute
             int mElementSize = mElementDataSize.size();
@@ -161,7 +190,7 @@ public class HomeFragment extends Fragment {
             }else{
                 max=mElementSize;
             }
-            System.out.println("jumlah data"+mElementSize);
+            //System.out.println("jumlah data"+mElementSize);
             for (int i = 0; i < max; i++) {
                 //Judul
                 Elements ElemenJudul = mElementDataSize.select("h3[class=post-title entry-title]").eq(i);
@@ -180,9 +209,64 @@ public class HomeFragment extends Fragment {
                 card_judul.add(Nama);
                 card_url.add(urlPosting);
             }
-            System.out.println("url"+card_url);
-            System.out.println("kat"+card_kategori);
-            System.out.println("judul"+card_judul);
+            //---------------------------
+            //--------------------------
+            //----POP
+            //------------
+            Elements populerSize = pagPopuler.select("div[class=date-posts] div[class=post-outer]");
+            // Locate the content attribute
+            int mpopulerSize = populerSize.size();
+            if(mpopulerSize>10){
+                max=10;
+            }else{
+                max=mpopulerSize;
+            }
+            //System.out.println("jumlah data"+mElementSize);
+            for (int ip = 0; ip < max; ip++) {
+                //Judul
+                Elements popJudul = populerSize.select("h3[class=post-title entry-title]").eq(ip);
+                String popNama= popJudul.text();
+                //gambar
+                Elements popGambar = populerSize.select("div[class=post-body entry-content]").eq(ip);
+                String popGambara = popGambar.select("img").eq(0).attr("src");
+                Elements popKat = populerSize.select("div[class=post-footer-line post-footer-line-2] span").eq(ip);
+                String popKet = popKat.select("a").eq(0).text().trim();
+                String popUrl = popJudul.select("a").eq(0).attr("href");
+                pop_gambar.add(popGambara);
+                pop_kategori.add(popKet);
+                pop_judul.add(popNama);
+                pop_url.add(popUrl);
+            }
+            //---------------------------
+            //--------------------------
+            //----AYAM
+            //------------
+            Elements ayamsize = pageAyam.select("div[class=date-posts] div[class=post-outer]");
+            // Locate the content attribute
+            int mayamsize = ayamsize.size();
+            if(mayamsize>10){
+                max=10;
+            }else{
+                max=mayamsize;
+            }
+            //System.out.println("jumlah data"+mElementSize);
+            for (int iy = 0; iy < max; iy++) {
+                //Judul
+                Elements ayJudul = ayamsize.select("h3[class=post-title entry-title]").eq(iy);
+                String ayNama= ayJudul.text();
+                //gambar
+                Elements ayGambar = ayamsize.select("div[class=post-body entry-content]").eq(iy);
+                String ayGambara = ayGambar.select("img").eq(0).attr("src");
+                Elements ayKat = ayamsize.select("div[class=post-footer-line post-footer-line-2] span").eq(iy);
+                String ayKet = ayKat.select("a").eq(0).text().trim();
+                String ayUrl = ayJudul.select("a").eq(0).attr("href");
+                ay_gambar.add(ayGambara);
+                ay_kategori.add(ayKet);
+                ay_judul.add(ayNama);
+                ay_url.add(ayUrl);
+            }
+            //---------------------------
+            //--------------------------
             return null;
         }
 
@@ -190,11 +274,46 @@ public class HomeFragment extends Fragment {
         protected void onPostExecute(Void result) {
             //This is where we update the UI with the acquired data
             // Set description into TextView
-            Log.d(TAG, "onPostExecute: "+result);
-            HomeAdapter mDataAdapter = new HomeAdapter( card_judul, card_kategori, card_gambar, card_url);
-            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),2);
+            //Log.d(TAG, "onPostExecute: "+result);
+            //--------------RECENT -
+            //----------------------
+            HomeAdapter mDataAdapter = new HomeAdapter( getActivity(), card_judul, card_kategori, card_gambar, card_url);
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),1, LinearLayoutManager.HORIZONTAL, false);
+            //attachToRecyclerView
+            GridPagerSnapHelper gridPagerSnapHelper = new GridPagerSnapHelper();
+            gridPagerSnapHelper.setRow(1).setColumn(1);
+            gridPagerSnapHelper.attachToRecyclerView(mRecyclerView);
+
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(mDataAdapter);
+            //--------------------------
+            //-------------------------
+            //--------------RECENT -
+            //----------------------
+            SmallAdapter popDataAdapter = new SmallAdapter( getActivity(),pop_judul, pop_kategori, pop_gambar, pop_url);
+            RecyclerView.LayoutManager poplayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),1, LinearLayoutManager.HORIZONTAL, false);
+            //attachToRecyclerView
+            GridPagerSnapHelper popGrid = new GridPagerSnapHelper();
+            popGrid.setRow(1).setColumn(2);
+            popGrid.attachToRecyclerView(popRc);
+
+            popRc.setLayoutManager(poplayoutManager);
+            popRc.setAdapter(popDataAdapter);
+            //--------------------------
+            //-------------------------
+            //--------------AYAM -
+            //----------------------
+            SmallAdapter ayamDataAdapter = new SmallAdapter( getActivity(),ay_judul, ay_kategori, ay_gambar, ay_url);
+            RecyclerView.LayoutManager ayamLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),1, LinearLayoutManager.HORIZONTAL, false);
+            //attachToRecyclerView
+            GridPagerSnapHelper ayamGrid = new GridPagerSnapHelper();
+            ayamGrid.setRow(1).setColumn(2);
+            ayamGrid.attachToRecyclerView(ayamRc);
+
+            ayamRc.setLayoutManager(ayamLayoutManager);
+            ayamRc.setAdapter(ayamDataAdapter);
+            //--------------------------
+            //-------------------------
             dialog.dismiss();
         }
 
