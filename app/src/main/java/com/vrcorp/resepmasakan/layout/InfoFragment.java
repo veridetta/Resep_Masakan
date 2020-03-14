@@ -1,5 +1,6 @@
 package com.vrcorp.resepmasakan.layout;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import com.vrcorp.resepmasakan.R;
 
 public class InfoFragment extends Fragment {
    View view;
-
     public InfoFragment() {
         // Required empty public constructor
     }

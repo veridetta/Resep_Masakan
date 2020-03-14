@@ -49,6 +49,7 @@ public class CariActivity extends AppCompatActivity {
     private ArrayList<String> cariArray = new ArrayList<>();
     private ArrayList<String> gambarArray = new ArrayList<>();
     private ArrayList<String> urlArray = new ArrayList<>();
+    private ArrayList<String> jenisList = new ArrayList<>();
     RecyclerView rc_cari;
     int data=0;
     ShimmerLayout sh_cari;
@@ -110,6 +111,7 @@ public class CariActivity extends AppCompatActivity {
                 gambarArray.add(gambara);
                 cariArray.add(Nama);
                 urlArray.add(urlPosting);
+                jenisList.add("cari");
             }
             //---------------------------
             //--------------------------
@@ -121,7 +123,7 @@ public class CariActivity extends AppCompatActivity {
 
             //--------------RECENT -
             //----------------------
-            CariAdapter mDataAdapter = new CariAdapter( CariActivity.this, cariArray, urlArray, gambarArray);
+            CariAdapter mDataAdapter = new CariAdapter( CariActivity.this, cariArray, urlArray, gambarArray,jenisList);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(CariActivity.this.getApplicationContext(),1, LinearLayoutManager.VERTICAL, false);
             //attachToRecyclerView
             if(data>0){
@@ -133,6 +135,7 @@ public class CariActivity extends AppCompatActivity {
                 jdul.setVisibility(View.GONE);
                 sh_cari.stopShimmerAnimation();
                 sh_cari.setVisibility(View.GONE);
+                rc_cari.setVisibility(View.GONE);
                 no_result.setVisibility(View.VISIBLE);
             }
 

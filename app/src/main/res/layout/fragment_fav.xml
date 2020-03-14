@@ -41,12 +41,6 @@
                             android:textStyle="bold"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_18sdp"/>
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_1sdp"
-                            android:layout_marginTop="@dimen/_6sdp"
-                            android:layout_marginBottom="@dimen/_6sdp"
-                            android:background="@color/blue_400"/>
                         <LinearLayout
                             android:id="@+id/no_result"
                             android:visibility="gone"
@@ -109,6 +103,7 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:minHeight="@dimen/_250sdp"
                                 android:id="@+id/rc_fav">
 
                             </androidx.recyclerview.widget.RecyclerView>

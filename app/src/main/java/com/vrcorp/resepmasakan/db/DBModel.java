@@ -15,7 +15,7 @@ public class DBModel {
     public String getJudul() {
         return judul;
     }
-    public void setJudul(String nama) {
+    public void setJudul(String judul) {
         this.judul = judul;
     }
 

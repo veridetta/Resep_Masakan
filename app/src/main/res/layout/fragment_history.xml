@@ -5,10 +5,49 @@
     android:layout_height="match_parent"
     tools:context=".layout.InfoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+   <LinearLayout
+       android:layout_width="wrap_content"
+       android:layout_marginTop="@dimen/_20sdp"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:layout_gravity="center"
+       android:gravity="center">
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center"
+           android:gravity="center">
+           <ImageView
+               android:layout_width="@dimen/_80sdp"
+               android:layout_height="@dimen/_80sdp"
+               android:layout_gravity="center"
+               android:background="@drawable/lettuce"/>
+       </LinearLayout>
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Resep Makanan Apps"
+           android:textSize="@dimen/_18sdp"
+           android:textStyle="bold"
+           android:textColor="@color/blue_400"/>
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Created By inc.vr.corp"
+           android:textSize="@dimen/_16sdp"
+           android:textColor="@color/blue_400"/>
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="inc.vr.corp@gmail.com"
+           android:textSize="@dimen/_16sdp"
+           android:textColor="@color/blue_400"/>
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="08817769047"
+           android:textSize="@dimen/_16sdp"
+           android:textColor="@color/blue_400"/>
+   </LinearLayout>
 
 </FrameLayout>

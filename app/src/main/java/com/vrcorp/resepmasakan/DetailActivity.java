@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,14 +13,17 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +37,7 @@ import com.vrcorp.resepmasakan.adapter.BahanAdapter;
 import com.vrcorp.resepmasakan.adapter.HomeAdapter;
 import com.vrcorp.resepmasakan.adapter.SmallAdapter;
 import com.vrcorp.resepmasakan.adapter.StepAdapter;
+import com.vrcorp.resepmasakan.db.DBHelper;
 import com.vrcorp.resepmasakan.layout.HomeFragment;
 
 import org.jsoup.Jsoup;
@@ -55,10 +60,14 @@ public class DetailActivity extends AppCompatActivity {
     RecyclerView bahan, step;
     String urlnya;
     TextView judul;
-    ImageView bg,imgBack;
+    ImageView bg,imgBack, imgFav;
+    CardView share, fav;
     String gambara, Nama;
+    LinearLayout shareLY;
     ProgressDialog dialog;
     ShimmerLayout sh_bahan, sh_step;
+    DBHelper helper;
+    int success=0, favoritStatus=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,13 +78,88 @@ public class DetailActivity extends AppCompatActivity {
         bg = findViewById(R.id.bg_detail);
         bahan = findViewById(R.id.rc_bahan);
         step = findViewById(R.id.rc_langkah);
+        shareLY = findViewById(R.id.content_share);
         Intent intent = getIntent();
         urlnya = intent.getStringExtra("url");
         sh_bahan = findViewById(R.id.shimmer_bahan);
         sh_step = findViewById(R.id.shimmer_step);
+        share = findViewById(R.id.card_share);
+        fav = findViewById(R.id.card_fav);
+        imgFav = findViewById(R.id.img_fav);
+        helper = new DBHelper(this);
+        success = helper.cekFav(urlnya);
+        if(success>0){
+            Glide.with(imgFav)
+                    .load(getResources()
+                            .getIdentifier("fav", "drawable", this.getPackageName()))
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            imgFav.setImageDrawable(resource);
+                        }
+                    });
+            favoritStatus=1;
+        }
+        fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(favoritStatus>0){
+                    Glide.with(imgFav)
+                            .load(getResources()
+                                    .getIdentifier("nofav", "drawable", getPackageName()))
+                            .into(new SimpleTarget<Drawable>() {
+                                @Override
+                                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                    imgFav.setImageDrawable(resource);
+                                }
+                            });
+                    helper.deletDB(urlnya);
+                    favoritStatus=0;
+                }else{
+                    Glide.with(imgFav)
+                            .load(getResources()
+                                    .getIdentifier("fav", "drawable", getPackageName()))
+                            .into(new SimpleTarget<Drawable>() {
+                                @Override
+                                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                    imgFav.setImageDrawable(resource);
+                                }
+                            });
+                    helper.insertIntoDB(1,Nama,gambara,urlnya,"","","1");
+                    favoritStatus=1;
+                }
+            }
+        });
         //dialog = new ProgressDialog(this);
         //dialog.setCancelable(false);
         //dialog.setMessage("Memuat data ....");
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout f = shareLY;
+                f.setDrawingCacheEnabled(true);
+                f.buildDrawingCache(true);
+                Bitmap saveBm = Bitmap.createBitmap(f.getDrawingCache());
+                f.setDrawingCacheEnabled(false);
+                String bitmapPath = MediaStore.Images.Media.insertImage(f.getContext().getContentResolver(),
+                        saveBm,"Resep memasak "+Nama, "Sumber Aplikasi Resep Makanan");
+                /*Uri bitmapUri = Uri.parse(bitmapPath);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("image/png");
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.putExtra(Intent.EXTRA_STREAM, bitmapUri );
+                v.getContext().startActivity(Intent.createChooser(intent , "Share"));*/
+                Intent shareIntent;
+
+                Uri bmpUri = Uri.parse(bitmapPath);
+                shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+                shareIntent.putExtra(Intent.EXTRA_TEXT,"Download aplikasi Resep Memasak secara gratis " + "https://play.google.com/store/apps/details?id=" +getPackageName());
+                shareIntent.setType("image/png");
+                startActivity(Intent.createChooser(shareIntent,"Share with"));
+            }
+        });
         new CardGet().execute();
         //dialog.show();
         sh_bahan.startShimmerAnimation();
@@ -124,12 +208,14 @@ public class DetailActivity extends AppCompatActivity {
                     String bahan = div.select("div").eq(0).text().trim();
                     bahanArray.add(bahan);
                 }
+                int c=1;
                 Elements StepSize = mBlogPagination.select("div[class=post-body entry-content] div[class=ingredient__details] ol.numbered-list li");
                 for(int b=0;b<StepSize.size();b++){
-                    Elements dov = StepSize.select("div").eq(b);
-                    String step = dov.select("div").eq(0).text().trim();
+                    Elements dov = StepSize.select("div.mb-2").eq(b);
+                    String step = dov.text().trim();
                     stepArray.add(step);
-                    nomorArray.add(String.valueOf(b+1));
+                    nomorArray.add(String.valueOf(c));
+                    c++;
                 }
             }
             //---------------------------
@@ -148,6 +234,7 @@ public class DetailActivity extends AppCompatActivity {
             System.out.println("setep"+stepArray+Nama+gambara);
             System.out.println("bahan"+bahanArray);
             System.out.println("nomor"+nomorArray);
+            judul.setText(Nama);
             Glide.with(bg)
                     .load(Uri.parse(gambara))
                     .apply(RequestOptions.centerCropTransform())
@@ -189,5 +276,10 @@ public class DetailActivity extends AppCompatActivity {
         sh_bahan.stopShimmerAnimation();
         sh_step.stopShimmerAnimation();
         super.onPause();
+    }
+    @Override
+    public void onDestroy() {
+        helper.close();
+        super.onDestroy();
     }
 }

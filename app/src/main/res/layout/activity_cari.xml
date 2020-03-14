@@ -108,6 +108,7 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:minHeight="@dimen/_250sdp"
                                 android:id="@+id/rc_cari">
 
                             </androidx.recyclerview.widget.RecyclerView>

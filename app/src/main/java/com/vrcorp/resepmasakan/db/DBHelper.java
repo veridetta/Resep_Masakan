@@ -3,6 +3,7 @@ package com.vrcorp.resepmasakan.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -13,12 +14,12 @@ import java.util.List;
 
 
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME="mahaapss";
+    private static final String DATABASE_NAME="dbfav";
 
     private static final int DATABASE_VERSION = 1;
     private static final String DB_TABLE = "favorit";
     private static final String STU_TABLE = "create table "+DB_TABLE +"(id int primary key,judul TEXT ,gambar TEXT ,url TEXT" +
-            " ,des TEXT ,ketegori TEXT ,favorit TEXT)";
+            " ,des TEXT ,kategori TEXT ,favorit TEXT)";
     public final static String DATABASE_PATH = "/data/data/com.vrcorp.resepmasakan/databases/";
 
     Context context;
@@ -52,7 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         // 2. create ContentValues to add key "column"/value
         ContentValues values = new ContentValues();
-        values.put("id", id);
+        //values.put("id", id);
         values.put("gambar", gambar);
         values.put("url", url);
         values.put("des", des);
@@ -96,6 +97,25 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db= this.getWritableDatabase();
         db.delete(DB_TABLE, "id" + " = ?", new String[] { id });
         db.close();
+    }
+    public int cekFav(String url)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int success=0;
+        Cursor cursor = db.rawQuery("Select * FROM favorit where url=?",new String[]{url});
+        if(cursor != null && cursor.moveToFirst() && cursor.getCount() > 0)
+        {
+            success=1;
+        }
+        return success;
+    }
+    public int getTotalFav() {
+        String countQuery = "SELECT  * FROM " + DB_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
     }
 
 }
