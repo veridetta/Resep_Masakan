@@ -13,7 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
-                android:id="@+id/content_share"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RelativeLayout
@@ -91,7 +90,7 @@
                             app:cardMaxElevation="@dimen/_4sdp"
                             app:cardCornerRadius="@dimen/_6sdp">
                             <LinearLayout
-
+                                android:id="@+id/content_share"
                                 android:background="@color/white"
                                 android:layout_margin="@dimen/_5sdp"
                                 android:layout_width="match_parent"

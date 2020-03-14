@@ -155,7 +155,7 @@ public class DetailActivity extends AppCompatActivity {
                 shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                 shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-                shareIntent.putExtra(Intent.EXTRA_TEXT,"Download aplikasi Resep Memasak secara gratis " + "https://play.google.com/store/apps/details?id=" +getPackageName());
+                shareIntent.putExtra(Intent.EXTRA_TEXT,"Resep memasak "+Nama+", Download aplikasi Resep Memasak secara gratis " + "https://play.google.com/store/apps/details?id=" +getPackageName());
                 shareIntent.setType("image/png");
                 startActivity(Intent.createChooser(shareIntent,"Share with"));
             }
