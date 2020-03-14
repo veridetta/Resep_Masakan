@@ -43,6 +43,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import io.supercharge.shimmerlayout.ShimmerLayout;
+
 public class DetailActivity extends AppCompatActivity {
     private ActionBar toolbar;
     boolean doubleBackToExitPressedOnce = false;
@@ -56,6 +58,7 @@ public class DetailActivity extends AppCompatActivity {
     ImageView bg,imgBack;
     String gambara, Nama;
     ProgressDialog dialog;
+    ShimmerLayout sh_bahan, sh_step;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,11 +71,15 @@ public class DetailActivity extends AppCompatActivity {
         step = findViewById(R.id.rc_langkah);
         Intent intent = getIntent();
         urlnya = intent.getStringExtra("url");
-        dialog = new ProgressDialog(this);
-        dialog.setCancelable(false);
-        dialog.setMessage("Memuat data ....");
+        sh_bahan = findViewById(R.id.shimmer_bahan);
+        sh_step = findViewById(R.id.shimmer_step);
+        //dialog = new ProgressDialog(this);
+        //dialog.setCancelable(false);
+        //dialog.setMessage("Memuat data ....");
         new CardGet().execute();
-        dialog.show();
+        //dialog.show();
+        sh_bahan.startShimmerAnimation();
+        sh_step.startShimmerAnimation();
     }
     private class CardGet extends AsyncTask<Void, Void, Void> {
         @Override
@@ -155,15 +162,32 @@ public class DetailActivity extends AppCompatActivity {
             //attachToRecyclerView
             bahan.setLayoutManager(mLayoutManager);
             bahan.setAdapter(mDataAdapter);
+            sh_bahan.stopShimmerAnimation();
+            sh_bahan.setVisibility(View.GONE);
             //--------------------------
             StepAdapter stepData = new StepAdapter(stepArray, nomorArray);
             RecyclerView.LayoutManager stepLayout = new GridLayoutManager(DetailActivity.this, 1, GridLayoutManager.VERTICAL, false);
             //attachToRecyclerView
             step.setLayoutManager(stepLayout);
             step.setAdapter(stepData);
+            sh_step.stopShimmerAnimation();
+            sh_step.setVisibility(View.GONE);
             //--------------------------
-            dialog.dismiss();
+            //dialog.dismiss();
         }
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        sh_step.startShimmerAnimation();
+        sh_bahan.startShimmerAnimation();
+    }
+
+    @Override
+    public void onPause() {
+        sh_bahan.stopShimmerAnimation();
+        sh_step.stopShimmerAnimation();
+        super.onPause();
     }
 }

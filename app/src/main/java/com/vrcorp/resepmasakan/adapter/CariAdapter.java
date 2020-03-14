@@ -1,16 +1,14 @@
 package com.vrcorp.resepmasakan.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,49 +25,44 @@ import com.vrcorp.resepmasakan.R;
 
 import java.util.ArrayList;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
-    private ArrayList<String> judulList = new ArrayList<>();
-    private ArrayList<String> kategoriList = new ArrayList<>();
-    private ArrayList<String> photoList = new ArrayList<>();
-    private ArrayList<String> urlList = new ArrayList<>();
-    private Context context;
+public class CariAdapter extends RecyclerView.Adapter<CariAdapter.MyViewHolder> {
+private ArrayList<String> judulList = new ArrayList<>();
+private ArrayList<String> photoList = new ArrayList<>();
+private ArrayList<String> urlList = new ArrayList<>();
+private Context context;
 
 
-    public HomeAdapter(Context context, ArrayList<String> judulList,
-                       ArrayList<String> kategoriList,
-                       ArrayList<String> photoList,
-                       ArrayList<String> urlList) {
+public CariAdapter(Context context, ArrayList<String> judulList,
+                   ArrayList<String> urlList,
+                   ArrayList<String> photoList) {
         this.context = context;
         this.judulList = judulList;
-        this.kategoriList = kategoriList;
         this.photoList = photoList;
         this.urlList = urlList;
-    }
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView txtKategori, txtJudul;
-        ImageView photoResep;
-        CardView cardBaru;
-        public MyViewHolder(View view) {
-            super(view);
-            //this.bg = view.findViewById(R.id.bg_img);
-            txtKategori = view.findViewById(R.id.ketgori_home);
-            txtJudul = view.findViewById(R.id.judul_home);
-            cardBaru = view.findViewById(R.id.card_home);
-            photoResep = view.findViewById(R.id.img_home);
         }
+
+public class MyViewHolder extends RecyclerView.ViewHolder {
+    TextView  txtJudul;
+    ImageView photoResep;
+    LinearLayout cardCari;
+    public MyViewHolder(View view) {
+        super(view);
+        //this.bg = view.findViewById(R.id.bg_img);
+        txtJudul = view.findViewById(R.id.judul_cari);
+        cardCari= view.findViewById(R.id.card_cari);
+        photoResep = view.findViewById(R.id.img_cari);
     }
+}
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CariAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.content_list, parent, false);
-        return new MyViewHolder(itemView);
+                .inflate(R.layout.item_cari, parent, false);
+        return new CariAdapter.MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.txtKategori.setText(kategoriList.get(position));
+    public void onBindViewHolder(final CariAdapter.MyViewHolder holder, final int position) {
         holder.txtJudul.setText(judulList.get(position));
         Glide.with(holder.photoResep.getContext())
                 .load(Uri.parse(photoList.get(position)))
@@ -80,7 +73,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                         holder.photoResep.setImageDrawable(resource);
                     }
                 });
-        holder.cardBaru.setOnClickListener(new View.OnClickListener() {
+        holder.cardCari.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailActivity.class);

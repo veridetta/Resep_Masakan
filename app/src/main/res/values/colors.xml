@@ -600,4 +600,5 @@
     <color name="dark_bg_light_disabled_text">#80FFFFFF</color>
 
     <color name="dark_bg_light_hint_text">#80FFFFFF</color>
+    <color name="placeholder_bg">#dddddd</color>
 </resources>

@@ -1,9 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CariActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_350sdp"
+                        android:minHeight="@dimen/_80sdp"
+                        android:background="@color/blue_400"
+                        android:padding="@dimen/_6sdp">
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_80sdp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/cari_judul"
+                            android:layout_gravity="bottom"
+                            android:layout_margin="@dimen/_8sdp"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Hasil cari untuk kata helo "
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_18sdp"/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:layout_marginBottom="@dimen/_6sdp"
+                            android:background="@color/blue_400"/>
+                        <LinearLayout
+                            android:id="@+id/no_result"
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_150sdp"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_gravity="bottom"
+                                android:layout_margin="@dimen/_8sdp"
+                                android:layout_width="@dimen/_150sdp"
+                                android:layout_height="wrap_content"
+                                android:text="Oops. .."
+                                android:textStyle="bold"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_30sdp"/>
+                            <TextView
+                                android:layout_gravity="bottom"
+                                android:layout_margin="@dimen/_8sdp"
+                                android:layout_width="@dimen/_150sdp"
+                                android:layout_height="wrap_content"
+                                android:text="Tidak ada hasil yang dapat kami temukan"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_16sdp"/>
+                            <TextView
+                                android:layout_gravity="bottom"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:layout_width="@dimen/_150sdp"
+                                android:layout_height="wrap_content"
+                                android:text="Silahkan cari dengan kata yang lain"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_14sdp"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@color/white"
+                            android:padding="@dimen/_6sdp"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp">
+                            <io.supercharge.shimmerlayout.ShimmerLayout
+                                android:id="@+id/shimmer_cari"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                app:shimmer_animation_duration="1200">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+                                    <include layout="@layout/shimmer_cari" />
+                                    <include layout="@layout/shimmer_cari" />
+                                    <include layout="@layout/shimmer_cari" />
+                                    <include layout="@layout/shimmer_cari" />
+                                </LinearLayout>
+
+                            </io.supercharge.shimmerlayout.ShimmerLayout>
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/rc_cari">
+
+                            </androidx.recyclerview.widget.RecyclerView>
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

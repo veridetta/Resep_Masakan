@@ -99,6 +99,24 @@
                                         android:text="Bahan - bahan"
                                         android:layout_marginBottom="@dimen/_8sdp"
                                         android:layout_marginTop="@dimen/_8sdp"/>
+                                    <io.supercharge.shimmerlayout.ShimmerLayout
+                                        android:id="@+id/shimmer_bahan"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        app:shimmer_animation_duration="1200">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+                                            <include layout="@layout/shimmer_detail" />
+                                            <include layout="@layout/shimmer_detail" />
+                                            <include layout="@layout/shimmer_detail" />
+                                            <include layout="@layout/shimmer_detail" />
+                                        </LinearLayout>
+
+                                    </io.supercharge.shimmerlayout.ShimmerLayout>
                                     <androidx.recyclerview.widget.RecyclerView
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
@@ -121,6 +139,24 @@
                                         android:text="Langkah - Langkah"
                                         android:layout_marginBottom="@dimen/_8sdp"
                                         android:layout_marginTop="@dimen/_8sdp"/>
+                                    <io.supercharge.shimmerlayout.ShimmerLayout
+                                        android:id="@+id/shimmer_step"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        app:shimmer_animation_duration="1200">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+                                            <include layout="@layout/shimmer_detail" />
+                                            <include layout="@layout/shimmer_detail" />
+                                            <include layout="@layout/shimmer_detail" />
+                                            <include layout="@layout/shimmer_detail" />
+                                        </LinearLayout>
+
+                                    </io.supercharge.shimmerlayout.ShimmerLayout>
                                     <androidx.recyclerview.widget.RecyclerView
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"

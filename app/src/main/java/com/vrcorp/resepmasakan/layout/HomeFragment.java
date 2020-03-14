@@ -3,6 +3,7 @@ package com.vrcorp.resepmasakan.layout;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,55 +15,37 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.material.tabs.TabLayout;
 import com.hhl.gridpagersnaphelper.GridPagerSnapHelper;
+import com.vrcorp.resepmasakan.CariActivity;
 import com.vrcorp.resepmasakan.R;
 import com.vrcorp.resepmasakan.adapter.HomeAdapter;
 import com.vrcorp.resepmasakan.adapter.SmallAdapter;
 
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 
-import okhttp3.internal.http.StatusLine;
-
-import static com.android.volley.VolleyLog.TAG;
+import io.supercharge.shimmerlayout.ShimmerLayout;
 
 
 public class HomeFragment extends Fragment {
     ProgressDialog dialog;
     SharedPreferences sharedpreferences;
     TextView coba;
-    RecyclerView order_list;
+    ShimmerLayout sh_recent, sh_pop,sh_ay;
     View view;
     SearchView cari;
     SwipeRefreshLayout refresh;
@@ -120,6 +103,9 @@ public class HomeFragment extends Fragment {
         popRc.setHasFixedSize(true);
         ayamRc= view.findViewById(R.id.rc_ayam);
         ayamRc.setHasFixedSize(true);
+        sh_recent = view.findViewById(R.id.shimmer_recent_update);
+        sh_pop = view.findViewById(R.id.shimmer_populer);
+        sh_ay= view.findViewById(R.id.shimmer_ayam);
         cari.setQueryHint("Masukan Kata Kunci");
         cari.onActionViewExpanded();
         cari.setIconified(true);
@@ -132,6 +118,18 @@ public class HomeFragment extends Fragment {
         cari.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                String cariVal = cari.getQuery().toString();
+                String urlnya = "https://resepdemo.blogspot.com/search?q="+cariVal;
+                if(cariVal.length()<3){
+                    Toast.makeText(getActivity(),"Minimal kata minimal 3 huruf",Toast.LENGTH_LONG).show();
+                }else if(cariVal.length()>10){
+                    Toast.makeText(getActivity(),"Maksimal 10 huruf",Toast.LENGTH_LONG).show();
+                }else{
+                    Intent intent = new Intent(getActivity(), CariActivity.class);
+                    intent.putExtra("url",urlnya);
+                    intent.putExtra("judul","Hasil cari dari kata "+cariVal);
+                    startActivity(intent);
+                }
 
                 return false;
             }
@@ -142,9 +140,9 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
-        dialog = new ProgressDialog(getActivity());
-        dialog.setCancelable(false);
-        dialog.setMessage("Memuat data ....");
+        //dialog = new ProgressDialog(getActivity());
+        //dialog.setCancelable(false);
+        //dialog.setMessage("Memuat data ....");
         /*refresh.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
@@ -155,7 +153,10 @@ public class HomeFragment extends Fragment {
                 }
         );*/
         new CardGet().execute();
-        dialog.show();
+        //dialog.show();
+        sh_recent.startShimmerAnimation();
+        sh_pop.startShimmerAnimation();
+        sh_ay.startShimmerAnimation();
         return view;
     }
     private class CardGet extends AsyncTask<Void, Void, Void> {
@@ -286,6 +287,8 @@ public class HomeFragment extends Fragment {
 
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(mDataAdapter);
+            sh_recent.stopShimmerAnimation();
+            sh_recent.setVisibility(View.GONE);
             //--------------------------
             //-------------------------
             //--------------RECENT -
@@ -299,6 +302,8 @@ public class HomeFragment extends Fragment {
 
             popRc.setLayoutManager(poplayoutManager);
             popRc.setAdapter(popDataAdapter);
+            sh_pop.stopShimmerAnimation();
+            sh_pop.setVisibility(View.GONE);
             //--------------------------
             //-------------------------
             //--------------AYAM -
@@ -312,12 +317,28 @@ public class HomeFragment extends Fragment {
 
             ayamRc.setLayoutManager(ayamLayoutManager);
             ayamRc.setAdapter(ayamDataAdapter);
+            sh_ay.stopShimmerAnimation();
+            sh_ay.setVisibility(View.GONE);
             //--------------------------
             //-------------------------
-            dialog.dismiss();
+            //dialog.dismiss();
         }
 
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        sh_recent.startShimmerAnimation();
+        sh_pop.startShimmerAnimation();
+        sh_ay.startShimmerAnimation();
+    }
 
+    @Override
+    public void onPause() {
+        sh_recent.stopShimmerAnimation();
+        sh_pop.stopShimmerAnimation();
+        sh_ay.stopShimmerAnimation();
+        super.onPause();
+    }
 
 }

@@ -92,6 +92,22 @@
                             android:textStyle="bold"
                             android:textColor="@color/black"
                             android:text="Recent Update"/>
+                        <io.supercharge.shimmerlayout.ShimmerLayout
+                            android:id="@+id/shimmer_recent_update"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            app:shimmer_animation_duration="1200">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <include layout="@layout/shimmer_content" />
+                                <include layout="@layout/shimmer_content" />
+                            </LinearLayout>
+
+                        </io.supercharge.shimmerlayout.ShimmerLayout>
                         <androidx.recyclerview.widget.RecyclerView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -108,6 +124,22 @@
                             android:textStyle="bold"
                             android:textColor="@color/black"
                             android:text="Populer"/>
+                        <io.supercharge.shimmerlayout.ShimmerLayout
+                            android:id="@+id/shimmer_populer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            app:shimmer_animation_duration="1200">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <include layout="@layout/shimmer_small" />
+                                <include layout="@layout/shimmer_small" />
+                            </LinearLayout>
+
+                        </io.supercharge.shimmerlayout.ShimmerLayout>
                         <androidx.recyclerview.widget.RecyclerView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -124,6 +156,22 @@
                             android:textStyle="bold"
                             android:textColor="@color/black"
                             android:text="Olahan Ayam"/>
+                        <io.supercharge.shimmerlayout.ShimmerLayout
+                            android:id="@+id/shimmer_ayam"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            app:shimmer_animation_duration="1200">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <include layout="@layout/shimmer_small" />
+                                <include layout="@layout/shimmer_small" />
+                            </LinearLayout>
+
+                        </io.supercharge.shimmerlayout.ShimmerLayout>
                         <androidx.recyclerview.widget.RecyclerView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

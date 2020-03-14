@@ -3,12 +3,119 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".layout.FavFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_350sdp"
+                        android:minHeight="@dimen/_80sdp"
+                        android:background="@color/orange_400"
+                        android:padding="@dimen/_6sdp">
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_80sdp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/fav_judul"
+                            android:layout_gravity="bottom"
+                            android:layout_margin="@dimen/_8sdp"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Resep Favorit Kamu"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_18sdp"/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:layout_marginBottom="@dimen/_6sdp"
+                            android:background="@color/blue_400"/>
+                        <LinearLayout
+                            android:id="@+id/no_result"
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_150sdp"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_gravity="bottom"
+                                android:layout_margin="@dimen/_8sdp"
+                                android:layout_width="@dimen/_150sdp"
+                                android:layout_height="wrap_content"
+                                android:text="Oops. .."
+                                android:textStyle="bold"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_30sdp"/>
+                            <TextView
+                                android:layout_gravity="bottom"
+                                android:layout_margin="@dimen/_8sdp"
+                                android:layout_width="@dimen/_150sdp"
+                                android:layout_height="wrap_content"
+                                android:text="Belum ada resep favorit yang disimpan"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_16sdp"/>
+                            <TextView
+                                android:layout_gravity="bottom"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:layout_width="@dimen/_150sdp"
+                                android:layout_height="wrap_content"
+                                android:text="Silahkan simpan beberapa resep favoritmu"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_14sdp"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@color/white"
+                            android:padding="@dimen/_6sdp"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp">
+                            <io.supercharge.shimmerlayout.ShimmerLayout
+                                android:id="@+id/shimmer_fav"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                app:shimmer_animation_duration="1200">
 
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+                                    <include layout="@layout/shimmer_cari" />
+                                    <include layout="@layout/shimmer_cari" />
+                                    <include layout="@layout/shimmer_cari" />
+                                    <include layout="@layout/shimmer_cari" />
+                                </LinearLayout>
+
+                            </io.supercharge.shimmerlayout.ShimmerLayout>
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/rc_fav">
+
+                            </androidx.recyclerview.widget.RecyclerView>
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 </FrameLayout>

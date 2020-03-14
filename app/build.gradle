@@ -54,5 +54,9 @@ dependencies {
     implementation 'com.github.lsjwzh.RecyclerViewPager:lib:v1.1.1'
     //new pagview
     implementation 'com.hhl:gridpagersnaphelper:1.0.0'
+    //shimmer
+    implementation 'io.supercharge:shimmerlayout:2.1.0'
+    //fav button
+    implementation 'com.github.ivbaranov:materialfavoritebutton:0.1.5'
 
 }
