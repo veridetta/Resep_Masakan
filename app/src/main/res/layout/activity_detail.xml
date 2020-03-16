@@ -93,6 +93,7 @@
                                 android:id="@+id/content_share"
                                 android:background="@color/white"
                                 android:layout_margin="@dimen/_5sdp"
+                                android:minHeight="@dimen/_400sdp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
